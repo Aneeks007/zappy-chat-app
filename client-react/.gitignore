@@ -1,0 +1,24 @@
+# Node modules
+node_modules/
+client-react/node_modules/
+server-express/node_modules/
+
+# Build and output
+build/
+dist/
+client-react/build/
+client-react/dist/
+server-express/build/
+server-express/dist/
+
+# Logs
+logs
+*.log
+
+# OS & IDE files
+.DS_Store
+.vscode/
+*.swp
+
+# Environment variables
+.env
