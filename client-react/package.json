@@ -1,6 +1,6 @@
 {
-  "name": "zappy-chat-app",
-  "version": "1.0.0",
+  "name": "react-pretty",
+  "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@cometchat/calls-sdk-javascript": "^4.1.0",
@@ -30,13 +30,21 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": ["react-app", "react-app/jest"]
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
-  "engines": {
-  "node": "18.x"
-},
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
-    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
