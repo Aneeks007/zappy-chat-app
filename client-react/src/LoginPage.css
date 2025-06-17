@@ -16,6 +16,37 @@ body, html {
   justify-content: center;
   align-items: center;
 }
+.login-form input {
+  padding: 8px;
+  font-size: 14px;
+}
+
+.login-form button {
+  padding: 6px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.inputbox span {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  color: #ccc;
+  cursor: pointer;
+  user-select: none;
+}
+@media screen and (max-width: 500px) {
+  .glass-form {
+    padding: 30px 20px;
+    max-width: 90%;
+  }
+
+  .zappy-logo {
+    width: 80px;
+  }
+}
+
 
 .glass-form {
   background: rgba(255, 255, 255, 0.1);

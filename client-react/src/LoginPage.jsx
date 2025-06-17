@@ -7,6 +7,7 @@ import zappyLogo from "./assets/zappy-logo.png"; // your new logo image
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -14,7 +15,6 @@ const LoginPage = () => {
 
     try {
       const res = await fetch("https://zappy-backend-2s1w.onrender.com/auth/login", {
-
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: email, password }),
@@ -38,6 +38,10 @@ const LoginPage = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   return (
     <section className="glass-login-bg">
       <form onSubmit={handleLogin} className="glass-form">
@@ -46,7 +50,7 @@ const LoginPage = () => {
 
         <div className="inputbox">
           <input
-            type="text" // <-- changed from "email" to "text"
+            type="text"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -56,12 +60,27 @@ const LoginPage = () => {
 
         <div className="inputbox">
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <label>Password</label>
+          <span
+            onClick={togglePasswordVisibility}
+            style={{
+              position: "absolute",
+              right: "20px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+              fontSize: "14px",
+              color: "#555",
+              userSelect: "none",
+            }}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </span>
         </div>
 
         <button type="submit">Log in</button>
