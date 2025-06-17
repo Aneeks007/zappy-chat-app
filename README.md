@@ -3,7 +3,7 @@
 Zappy is a modern, full-stack chat application built for **real-time communication** with support for:
 - ✅ Group Chats
 - ✅ Private Messaging (DMs)
-- ✅ Real time call and Video Call
+- ✅ Real time Voice call and Video Call
 - ✅ Responsive UI for Desktop & Mobile
 - ✅ Streamlined CometChat integration
 
