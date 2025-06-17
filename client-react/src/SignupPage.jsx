@@ -12,7 +12,7 @@ const SignUpPage = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3001/auth/signup", {
+      const res = await fetch("https://zappy-backend-2s1w.onrender.com/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, username, password }),

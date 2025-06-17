@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CometChatUIKit } from "@cometchat/chat-uikit-react";
-import { Eye, EyeOff } from "lucide-react";
 import "./LoginPage.css";
-import zappyLogo from "./assets/zappy-logo.png";
+import zappyLogo from "./assets/zappy-logo.png"; // your new logo image
+import { Eye, EyeOff } from "lucide-react";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -11,10 +11,6 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -36,14 +32,13 @@ const LoginPage = () => {
           .catch((error) => {
             console.error("CometChat login failed:", error);
             alert("CometChat login failed.");
-            setIsLoading(false);
           });
       } else {
         alert("Login failed.");
-        setIsLoading(false);
       }
     } catch (err) {
       alert("Something went wrong.");
+    } finally {
       setIsLoading(false);
     }
   };
@@ -72,14 +67,9 @@ const LoginPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <label>Password</label>
-          <span className="toggle-password" onClick={togglePasswordVisibility}>
-            {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
-            </span>
-        </div>
-        
-        <div className="remember-me">
-          <input type="checkbox" id="remember" />
-          <label htmlFor="remember">Remember me</label>
+          <span onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? <EyeOff size={18} color="#fff" /> : <Eye size={18} color="#fff" />}
+          </span>
         </div>
 
         <button type="submit" disabled={isLoading}>

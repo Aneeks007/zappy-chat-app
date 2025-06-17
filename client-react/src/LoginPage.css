@@ -154,18 +154,3 @@ button:hover {
   box-shadow: 0 1px 0 0 #00ffee;
 }
 
-/* ✅ Remember me checkbox */
-.remember-me {
-  color: white;
-  font-size: 0.85rem;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.remember-me input[type="checkbox"] {
-  accent-color: #00ffee;
-  width: 16px;
-  height: 16px;
-}
