@@ -73,10 +73,10 @@ const LoginPage = () => {
           />
           <label>Password</label>
           <span className="toggle-password" onClick={togglePasswordVisibility}>
-            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-          </span>
+            {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+            </span>
         </div>
-
+        
         <div className="remember-me">
           <input type="checkbox" id="remember" />
           <label htmlFor="remember">Remember me</label>
