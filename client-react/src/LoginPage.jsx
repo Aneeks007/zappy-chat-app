@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CometChatUIKit } from "@cometchat/chat-uikit-react";
 import "./LoginPage.css";
-import zappyLogo from "./assets/zappy-logo.png"; // your new logo image
+import zappyLogo from "./assets/zappy-logo.png";
 import { Eye, EyeOff } from "lucide-react";
 
 const LoginPage = () => {
@@ -67,8 +67,13 @@ const LoginPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <label>Password</label>
-          <span onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? <EyeOff size={18} color="#fff" /> : <Eye size={18} color="#fff" />}
+          <span
+            className="toggle-password"
+            onMouseDown={() => setShowPassword(true)}
+            onMouseUp={() => setShowPassword(false)}
+            onMouseLeave={() => setShowPassword(false)}
+          >
+            {showPassword ? <Eye size={18} color="#fff" /> : <EyeOff size={18} color="#fff" />}
           </span>
         </div>
 
