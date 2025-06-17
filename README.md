@@ -40,6 +40,7 @@ Zappy is a modern, full-stack chat application built for **real-time communicati
 ---
 ## 📸 Screenshots
 <img width="1512" alt="Screenshot 2025-06-17 at 9 17 54 AM" src="https://github.com/user-attachments/assets/37784119-cbf6-4606-b8aa-8a31433f4ef0" />
+<img width="1512" alt="Screenshot 2025-06-17 at 9 40 32 AM" src="https://github.com/user-attachments/assets/f8b6d5e4-83c2-4a18-9302-ec9883d7e99a" />
 <img width="1509" alt="Screenshot 2025-06-17 at 9 19 37 AM" src="https://github.com/user-attachments/assets/f6f6431e-4658-4c68-bd19-be118ff62d71" />
 <img width="1506" alt="Screenshot 2025-06-17 at 9 22 16 AM" src="https://github.com/user-attachments/assets/26484a78-6b4b-4e7c-b242-e1df82e97ae1" />
 <img width="1511" alt="Screenshot 2025-06-17 at 9 22 29 AM" src="https://github.com/user-attachments/assets/86e6eb0f-5f4c-4210-8f4e-374a5e7331a8" />
@@ -48,6 +49,7 @@ Zappy is a modern, full-stack chat application built for **real-time communicati
 Frontend deployed on Render
 Backend (Express) can also be deployed on Render / Railway / Cyclic
 ----
+
 
 📧 Contact
 Developer: Aneek Shah
