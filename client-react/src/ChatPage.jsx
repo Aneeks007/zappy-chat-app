@@ -1,17 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./ChatPage.css";
 import ProfileDropdown from "./components/ProfileDropdown";
 
 const ChatPage = () => {
-  const user = {
+  const [showProfile, setShowProfile] = useState(false);
+  const [user, setUser] = useState({
     name: "Aneek Shah",
     avatar: "/default-avatar.png", // Replace with actual avatar path or stored one
-  };
+  });
 
   const handleProfileUpdate = (updatedUser) => {
     console.log("User updated:", updatedUser);
-    // You can save to localStorage or call backend here if needed
+    setUser(updatedUser);
+    setShowProfile(false);
   };
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const profileOption = Array.from(document.querySelectorAll('div[role="menuitem"]'))
+        .find((el) => el.textContent?.includes(user.name));
+      if (profileOption) {
+        profileOption.onclick = () => setShowProfile(true);
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, [user.name]);
 
   return (
     <div className="chat-container">
@@ -51,6 +67,13 @@ const ChatPage = () => {
           <button type="button" className="send-btn">➤</button>
         </div>
       </div>
+
+      {/* Floating Profile Editor */}
+      {showProfile && (
+        <div style={{ position: "absolute", top: 60, right: 20, zIndex: 9999 }}>
+          <ProfileDropdown user={user} onUpdate={handleProfileUpdate} />
+        </div>
+      )}
     </div>
   );
 };
