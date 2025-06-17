@@ -1,7 +1,18 @@
 import React from "react";
 import "./ChatPage.css";
+import ProfileDropdown from "./components/ProfileDropdown";
 
 const ChatPage = () => {
+  const user = {
+    name: "Aneek Shah",
+    avatar: "/default-avatar.png", // Replace with actual avatar path or stored one
+  };
+
+  const handleProfileUpdate = (updatedUser) => {
+    console.log("User updated:", updatedUser);
+    // You can save to localStorage or call backend here if needed
+  };
+
   return (
     <div className="chat-container">
       {/* Sidebar */}
@@ -18,7 +29,8 @@ const ChatPage = () => {
         {/* Chat Header */}
         <div className="chat-header">
           <div className="chat-user-info">
-            <h3 className="chat-user-name">Richard Ray</h3>
+            {/* 👤 Profile dropdown added here */}
+            <ProfileDropdown user={user} onUpdate={handleProfileUpdate} />
             <span className="chat-status online">Online</span>
           </div>
         </div>
