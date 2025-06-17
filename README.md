@@ -11,7 +11,7 @@ Zappy is a modern, full-stack chat application built for **real-time communicati
 ## 🚀 Live Demo
 
 🟢 [Try Zappy Live on Render](https://zappy-prxq.onrender.com)
--USE (Ak) for user ID and (pass123) As password
+-SignUp and Login
 
 -----
 
