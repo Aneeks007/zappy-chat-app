@@ -1,17 +1,24 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CometChatUIKit } from "@cometchat/chat-uikit-react";
+import { Eye, EyeOff } from "lucide-react";
 import "./LoginPage.css";
-import zappyLogo from "./assets/zappy-logo.png"; // your new logo image
+import zappyLogo from "./assets/zappy-logo.png";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const res = await fetch("https://zappy-backend-2s1w.onrender.com/auth/login", {
@@ -29,17 +36,16 @@ const LoginPage = () => {
           .catch((error) => {
             console.error("CometChat login failed:", error);
             alert("CometChat login failed.");
+            setIsLoading(false);
           });
       } else {
         alert("Login failed.");
+        setIsLoading(false);
       }
     } catch (err) {
       alert("Something went wrong.");
+      setIsLoading(false);
     }
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
   };
 
   return (
@@ -66,24 +72,19 @@ const LoginPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <label>Password</label>
-          <span
-            onClick={togglePasswordVisibility}
-            style={{
-              position: "absolute",
-              right: "20px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              cursor: "pointer",
-              fontSize: "14px",
-              color: "#555",
-              userSelect: "none",
-            }}
-          >
-            {showPassword ? "Hide" : "Show"}
+          <span className="toggle-password" onClick={togglePasswordVisibility}>
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </span>
         </div>
 
-        <button type="submit">Log in</button>
+        <div className="remember-me">
+          <input type="checkbox" id="remember" />
+          <label htmlFor="remember">Remember me</label>
+        </div>
+
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? "Logging in..." : "Log in"}
+        </button>
 
         <div className="register">
           <p>
