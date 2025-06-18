@@ -6,14 +6,13 @@ import { CometChatUIKitLoginListener } from "@cometchat/chat-uikit-react";
 
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
-import CometChatApp from "./CometChat/CometChatApp"; // 🚀 This will switch mobile/desktop layouts
+import CometChatApp from "./CometChat/CometChatApp";
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState<CometChat.User | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Listen for CometChat login/logout events
   useEffect(() => {
     CometChat.addLoginListener(
       "zappy-app",
@@ -40,7 +39,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="App" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />

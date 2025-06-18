@@ -6,7 +6,7 @@ const ChatPage = () => {
   const [showProfile, setShowProfile] = useState(false);
   const [user, setUser] = useState({
     name: "Aneek Shah",
-    avatar: "/default-avatar.png", // Replace with actual avatar path or stored one
+    avatar: "/default-avatar.png",
   });
 
   const handleProfileUpdate = (updatedUser) => {
@@ -42,16 +42,13 @@ const ChatPage = () => {
 
       {/* Chat Main */}
       <div className="chat-main">
-        {/* Chat Header */}
         <div className="chat-header">
           <div className="chat-user-info">
-            {/* 👤 Profile dropdown added here */}
             <ProfileDropdown user={user} onUpdate={handleProfileUpdate} />
             <span className="chat-status online">Online</span>
           </div>
         </div>
 
-        {/* Messages */}
         <div className="chat-messages">
           <div className="chat-bubble received">Yes, it’s available.</div>
           <div className="chat-bubble sent">Hi, is the watch still up for sale?</div>
@@ -61,14 +58,12 @@ const ChatPage = () => {
           <div className="chat-bubble sent">I’ll take it. Can you ship?</div>
         </div>
 
-        {/* Chat Input */}
         <div className="chat-input">
           <input type="text" placeholder="Type a message..." />
           <button type="button" className="send-btn">➤</button>
         </div>
       </div>
 
-      {/* Floating Profile Editor */}
       {showProfile && (
         <div style={{ position: "absolute", top: 60, right: 20, zIndex: 9999 }}>
           <ProfileDropdown user={user} onUpdate={handleProfileUpdate} />

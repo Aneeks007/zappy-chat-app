@@ -1,4 +1,8 @@
 /* ChatPage.css */
+:root {
+  padding-bottom: env(safe-area-inset-bottom); /* ✅ safe zone for mobile */
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -19,6 +23,7 @@ html, body {
   flex: 1;
   height: 100%;
   overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom); /* ✅ ensure space for mobile nav */
 }
 
 .chat-sidebar {

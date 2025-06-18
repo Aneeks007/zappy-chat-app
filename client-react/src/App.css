@@ -190,4 +190,16 @@ body {
   .profile-form button {
     width: 100%;
   }
+  /* === Fix for iOS & Android mobile browser bottom tab cutoff === */
+@supports (padding: max(0px)) {
+  .App {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .chat-main,
+  .cometchat-root,
+  .messages-wrapper {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
 }
