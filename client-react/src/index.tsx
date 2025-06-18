@@ -1,12 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-
 import { CometChatUIKit, UIKitSettingsBuilder } from "@cometchat/chat-uikit-react";
 import App from "./App";
 import { setupLocalization } from "./CometChat/utils/utils";
 import cometChatLogo from "./CometChat/assets/cometchat_logo.svg";
 import { CometChatProvider } from "./CometChat/context/CometChatContext";
+
+// ✅ Fix: Mobile browser viewport height handling
+const setRealVH = () => {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
+};
+window.addEventListener("resize", setRealVH);
+setRealVH(); // run on load
 
 // CometChat API credentials
 const COMETCHAT_CONSTANTS = {

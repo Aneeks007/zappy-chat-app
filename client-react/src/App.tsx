@@ -6,7 +6,7 @@ import { CometChatUIKitLoginListener } from "@cometchat/chat-uikit-react";
 
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
-import CometChatApp from "./CometChat/CometChatApp"; // 🚀 Mobile/desktop layout handler
+import CometChatApp from "./CometChat/CometChatApp"; // 🚀 Handles mobile/desktop
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState<CometChat.User | null>(null);
@@ -46,8 +46,8 @@ function App() {
         <Route path="/chat" element={<CometChatApp user={loggedInUser} />} />
       </Routes>
 
-      {/* ✅ Safe area fix for iOS Safari & Chrome Android */}
-      <div className="safe-area-padding"></div>
+      {/* ✅ Invisible padding div for safe area inset on mobile */}
+      <div className="safe-area-padding" />
     </div>
   );
 }

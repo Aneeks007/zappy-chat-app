@@ -1,3 +1,4 @@
+/* === Base Reset & Scrollbar Hide === */
 * {
   padding: 0;
   margin: 0;
@@ -5,7 +6,6 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
 *::-webkit-scrollbar {
   display: none;
 }
@@ -16,11 +16,12 @@ html, body {
   font-family: 'Poppins', sans-serif;
 }
 
-/* 💡 Safe, dynamic height fix */
+/* 💡 Dynamic Height Fix */
 :root {
   --vh: 1vh;
 }
 
+/* === Main App Wrapper === */
 .App {
   height: calc(var(--vh, 1vh) * 100);
   width: 100vw;
@@ -31,7 +32,7 @@ html, body {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* ✅ Fix for CometChat layout */
+/* === CometChat Layout Fix === */
 .cometchat-root {
   width: 100%;
   height: calc(var(--vh, 1vh) * 100);
@@ -41,14 +42,13 @@ html, body {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* === CometChat UI Sections === */
 .conversations-wrapper {
   display: flex;
   width: 30vw;
   max-width: 420px;
   height: 100vh;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0px;
   flex: 3;
   background: var(--cometchat-background-color-01, #fff);
 }
@@ -59,8 +59,6 @@ html, body {
   width: 100%;
   overflow: auto;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0px;
   background: var(--cometchat-background-color-01, #fff);
 }
 
@@ -69,43 +67,15 @@ html, body {
   border-right: 1px solid var(--cometchat-border-color-light);
 }
 
+/* === Hide Scrollbar Again === */
 .selector-wrapper::-webkit-scrollbar,
 .selector-wrapper::-webkit-scrollbar-thumb {
   display: none;
 }
 
-.conversations-wrapper .selector-wrapper .cometchat-list {
-  position: relative;
-}
-
-.conversations-wrapper .selector-wrapper .cometchat-list .cometchat-list__header .cometchat-button {
-  height: fit-content;
-  width: fit-content;
-  padding: 0;
-  background: transparent;
-}
-
-.conversations-wrapper .selector-wrapper .cometchat-list .cometchat-list__header-menu {
-  top: 20px;
-}
-
-.selector-wrapper .cometchat-list .cometchat-list__header .cometchat-button .cometchat-button__icon {
-  height: 24px;
-  width: 24px;
-}
-
-.cometchat-incoming-call {
-  top: 17px;
-  left: 30px;
-}
-
-.selector-wrapper .cc-conversations {
-  border: none !important;
-}
-
 .messages-wrapper {
   width: 40vw;
-  height: calc(var(--vh, 1vh) * 100); /* ✅ Use safe height */
+  height: calc(var(--vh, 1vh) * 100);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -116,15 +86,40 @@ html, body {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-.conversations-wrapper .cometchat-list__header-title {
-  border-right: none;
+/* === Profile Page === */
+.profile-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 40px;
+}
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 300px;
+}
+.profile-form input,
+.profile-form button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
+/* === Mobile Fixes === */
 @media (max-width: 768px) {
   .conversations-wrapper {
     width: 100vw;
     max-width: 100%;
-    min-width: 100%;
     z-index: 1;
   }
 
@@ -138,47 +133,6 @@ html, body {
     height: calc(var(--vh, 1vh) * 100);
   }
 
-  @supports (padding: max(0px)) {
-    .App {
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-  }
-}
-
-/* ==== PROFILE PAGE STYLING ==== */
-.profile-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  padding: 40px;
-}
-
-.profile-avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #ddd;
-}
-
-.profile-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 300px;
-}
-
-.profile-form input,
-.profile-form button {
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-/* ==== MOBILE PROFILE FIX ==== */
-@media (max-width: 768px) {
   .profile-container {
     flex-direction: column;
     padding: 20px;
@@ -199,11 +153,11 @@ html, body {
   .profile-form button {
     width: 100%;
   }
-  /* ✅ Safe area inset support for iOS & Android */
+}
+
+/* ✅ Permanent Safe Area Fix */
 .safe-area-padding {
   height: env(safe-area-inset-bottom);
   height: constant(safe-area-inset-bottom); /* iOS fallback */
   background-color: transparent;
-}
-
 }
