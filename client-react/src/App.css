@@ -2,28 +2,32 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  /* IE and Edge */
   -ms-overflow-style: none;
-  /* Firefox */
   scrollbar-width: none;
 }
 
 *::-webkit-scrollbar {
-  /* Chrome, Safari, Opera */
   display: none;
 }
 
-body {
-  overflow-y: hidden;
+html, body {
+  height: 100%;
+  overflow: hidden;
 }
 
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* 💡 Use actual safe viewport height */
 .App {
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .cometchat-credentials__header {
@@ -39,6 +43,7 @@ body {
   display: flex;
   overflow: hidden;
   position: relative;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .conversations-wrapper {
@@ -113,6 +118,7 @@ body {
   flex: 5;
   background: var(--cometchat-background-color-03, #f5f5f5);
   overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .conversations-wrapper .cometchat-list__header-title {
@@ -135,7 +141,15 @@ body {
     margin-bottom: 0;
     overflow: hidden;
   }
+
+  /* Safe inset for mobile browsers */
+  @supports (padding: max(0px)) {
+    .App {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  }
 }
+
 /* ==== PROFILE PAGE STYLING ==== */
 .profile-container {
   display: flex;
@@ -190,16 +204,4 @@ body {
   .profile-form button {
     width: 100%;
   }
-  /* === Fix for iOS & Android mobile browser bottom tab cutoff === */
-@supports (padding: max(0px)) {
-  .App {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-
-  .chat-main,
-  .cometchat-root,
-  .messages-wrapper {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-}
 }
