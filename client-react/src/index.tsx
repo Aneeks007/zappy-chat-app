@@ -7,7 +7,7 @@ import { setupLocalization } from "./CometChat/utils/utils";
 import cometChatLogo from "./CometChat/assets/cometchat_logo.svg";
 import { CometChatProvider } from "./CometChat/context/CometChatContext";
 
-// ✅ Fix: Mobile browser viewport height handling
+// ✅ Fix: Dynamic viewport height for mobile
 const setRealVH = () => {
   const vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty("--vh", `${vh}px`);
@@ -15,14 +15,12 @@ const setRealVH = () => {
 window.addEventListener("resize", setRealVH);
 setRealVH(); // run on load
 
-// CometChat API credentials
 const COMETCHAT_CONSTANTS = {
   APP_ID: "277220fd8655d51c",
   REGION: "in",
   AUTH_KEY: "4b4d37c68b34a8bb44a3738023acac08c09ab2c4",
 };
 
-// Initialize and render app
 if (
   COMETCHAT_CONSTANTS.APP_ID &&
   COMETCHAT_CONSTANTS.REGION &&
@@ -51,7 +49,6 @@ if (
     );
   });
 } else {
-  // If credentials are missing, show fallback screen
   const root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
   );
