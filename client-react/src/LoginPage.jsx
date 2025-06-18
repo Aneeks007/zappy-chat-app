@@ -1,49 +1,106 @@
 import React, { useState, useEffect } from "react";
-import "./LoginPage.css";
 import { useNavigate } from "react-router-dom";
+import { CometChatUIKit } from "@cometchat/chat-uikit-react";
+import "./LoginPage.css";
+import zappyLogo from "./assets/zappy-logo.png";
+import { Eye, EyeOff, Moon, Sun } from "lucide-react";
 
-function LoginPage() {
+const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [theme, setTheme] = useState("light");
-  const [greeting, setGreeting] = useState("");
 
   useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour < 12) setGreeting("Good Morning Aneek!");
-    else if (hour < 18) setGreeting("Good Afternoon Aneek!");
-    else setGreeting("Good Evening Aneek!");
-  }, []);
+    document.body.className = isDarkMode ? "dark" : "light";
+  }, [isDarkMode]);
 
-  const toggleTheme = () => {
-    setTheme(prev => (prev === "light" ? "dark" : "light"));
-  };
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    navigate("/chat");
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("https://zappy-backend-2s1w.onrender.com/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: email, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem("chat-user", JSON.stringify(data));
+        CometChatUIKit.login(email)
+          .then(() => navigate("/chat"))
+          .catch((error) => {
+            console.error("CometChat login failed:", error);
+            alert("CometChat login failed.");
+          });
+      } else {
+        alert("Login failed.");
+      }
+    } catch (err) {
+      alert("Something went wrong.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className={`login-page ${theme}`}>
-      <div className="theme-toggle">
-        <button onClick={toggleTheme}>
-          {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
-        </button>
-      </div>
+    <section className="glass-login-bg">
+      <form onSubmit={handleLogin} className="glass-form">
+        <img src={zappyLogo} alt="Zappy Logo" className="zappy-logo" />
+        <h1>Login</h1>
 
-      <div className="login-box">
-        <h2 className="greeting">{greeting}</h2>
-        <form onSubmit={handleLogin}>
-          <input type="text" placeholder="Username" required />
-          <input type="password" placeholder="Password" required />
-          <button type="submit">Login</button>
-        </form>
-        <p>
-          Don’t have an account? <span onClick={() => navigate("/signup")}>Sign up</span>
-        </p>
-      </div>
-    </div>
+        <div className="theme-toggle" onClick={() => setIsDarkMode(!isDarkMode)}>
+          {isDarkMode ? <Sun size={20} color="#fff" /> : <Moon size={20} />}
+        </div>
+
+        <div className="inputbox">
+          <input
+            type="text"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <label>User ID</label>
+        </div>
+
+        <div className="inputbox">
+          <input
+            type={showPassword ? "text" : "password"}
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <label>Password</label>
+          <span
+            className="toggle-password"
+            onMouseDown={() => setShowPassword(true)}
+            onMouseUp={() => setShowPassword(false)}
+            onMouseLeave={() => setShowPassword(false)}
+          >
+            {showPassword ? <Eye size={18} color="#fff" /> : <EyeOff size={18} color="#fff" />}
+          </span>
+        </div>
+
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? "Logging in..." : "Log in"}
+        </button>
+
+        <div className="register">
+          <p>
+            Don't have an account?{" "}
+            <a href="#" onClick={() => navigate("/signup")}>
+              Register
+            </a>
+          </p>
+        </div>
+      </form>
+    </section>
   );
-}
+};
 
 export default LoginPage;
