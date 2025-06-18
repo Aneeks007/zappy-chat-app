@@ -1,97 +1,49 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { CometChatUIKit } from "@cometchat/chat-uikit-react";
+import React, { useState, useEffect } from "react";
 import "./LoginPage.css";
-import zappyLogo from "./assets/zappy-logo.png";
-import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+function LoginPage() {
   const navigate = useNavigate();
+  const [theme, setTheme] = useState("light");
+  const [greeting, setGreeting] = useState("");
 
-  const handleLogin = async (e) => {
+  useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting("Good Morning Aneek!");
+    else if (hour < 18) setGreeting("Good Afternoon Aneek!");
+    else setGreeting("Good Evening Aneek!");
+  }, []);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === "light" ? "dark" : "light"));
+  };
+
+  const handleLogin = (e) => {
     e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const res = await fetch("https://zappy-backend-2s1w.onrender.com/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: email, password }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        localStorage.setItem("chat-user", JSON.stringify(data));
-        CometChatUIKit.login(email)
-          .then(() => navigate("/chat"))
-          .catch((error) => {
-            console.error("CometChat login failed:", error);
-            alert("CometChat login failed.");
-          });
-      } else {
-        alert("Login failed.");
-      }
-    } catch (err) {
-      alert("Something went wrong.");
-    } finally {
-      setIsLoading(false);
-    }
+    navigate("/chat");
   };
 
   return (
-    <section className="glass-login-bg">
-      <form onSubmit={handleLogin} className="glass-form">
-        <img src={zappyLogo} alt="Zappy Logo" className="zappy-logo" />
-        <h1>Login</h1>
-
-        <div className="inputbox">
-          <input
-            type="text"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <label>User ID</label>
-        </div>
-
-        <div className="inputbox">
-          <input
-            type={showPassword ? "text" : "password"}
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <label>Password</label>
-          <span
-            className="toggle-password"
-            onMouseDown={() => setShowPassword(true)}
-            onMouseUp={() => setShowPassword(false)}
-            onMouseLeave={() => setShowPassword(false)}
-          >
-            {showPassword ? <Eye size={18} color="#fff" /> : <EyeOff size={18} color="#fff" />}
-          </span>
-        </div>
-
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Logging in..." : "Log in"}
+    <div className={`login-page ${theme}`}>
+      <div className="theme-toggle">
+        <button onClick={toggleTheme}>
+          {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
         </button>
+      </div>
 
-        <div className="register">
-          <p>
-            Don't have an account?{" "}
-            <a href="#" onClick={() => navigate("/signup")}>
-              Register
-            </a>
-          </p>
-        </div>
-      </form>
-    </section>
+      <div className="login-box">
+        <h2 className="greeting">{greeting}</h2>
+        <form onSubmit={handleLogin}>
+          <input type="text" placeholder="Username" required />
+          <input type="password" placeholder="Password" required />
+          <button type="submit">Login</button>
+        </form>
+        <p>
+          Don’t have an account? <span onClick={() => navigate("/signup")}>Sign up</span>
+        </p>
+      </div>
+    </div>
   );
-};
+}
 
 export default LoginPage;
