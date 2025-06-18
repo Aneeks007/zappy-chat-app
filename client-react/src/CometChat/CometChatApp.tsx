@@ -19,6 +19,15 @@ function CometChatApp({ user, group }: CometChatAppProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // ✅ Show greeting once after login
+  useEffect(() => {
+    const greet = localStorage.getItem("greeting");
+    if (greet) {
+      alert(greet); // ✅ Change to toast/snackbar if needed
+      localStorage.removeItem("greeting");
+    }
+  }, []);
+
   return isMobile ? (
     <MobileChatUI user={user} group={group} />
   ) : (
