@@ -2,15 +2,17 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatUIKitLoginListener } from "@cometchat/chat-uikit-react";
 
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
-import CometChatApp from "./CometChat/CometChatApp";
+import CometChatApp from "./CometChat/CometChatApp"; // 🚀 Handles mobile/desktop
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState<CometChat.User | null>(null);
-  const navigate = useNavigate();
-  const location = useLocation(); // 🚫 Don’t move this below any condition
+  
+  const navigate = useNavigate(); // ✅ always call hooks at top level
+  const location = useLocation();
 
   useEffect(() => {
     CometChat.addLoginListener(
@@ -21,7 +23,7 @@ function App() {
         },
         logoutSuccess: () => {
           setLoggedInUser(null);
-          navigate("/");
+          navigate("/"); // works now without hook violation
         },
       })
     );
@@ -31,23 +33,20 @@ function App() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      try {
-        const user = await CometChat.getLoggedinUser?.();
-        if (user) setLoggedInUser(user);
-      } catch (err) {
-        console.warn("❌ Error fetching user:", err);
-      }
+      const user = await CometChatUIKitLoginListener?.getLoggedInUser?.();
+      if (user) setLoggedInUser(user);
     };
     fetchUser();
   }, []);
 
   return (
     <div className="App">
-      <Routes>
+      <Routes location={location}>
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/chat" element={<CometChatApp user={loggedInUser} />} />
       </Routes>
+
       <div className="safe-area-padding" />
     </div>
   );
