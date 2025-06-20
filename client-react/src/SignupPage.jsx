@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './SignupPage.css';
 import { useNavigate } from 'react-router-dom';
 import zappyLogo from './assets/zappy-logo.png';
+import { generateKeyPair } from './utils/e2ee'; // ✅ Import key generator
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -23,10 +24,22 @@ const SignupPage = () => {
     e.preventDefault();
 
     try {
+      // ✅ Generate E2EE key pair
+      const { publicKey, privateKey } = await generateKeyPair();
+
+      // ✅ Store private key securely in localStorage
+      localStorage.setItem("zappy_private_key", privateKey);
+
+      // ✅ Append public key to signup form data
+      const payload = {
+        ...formData,
+        publicKey,
+      };
+
       const res = await fetch('https://zappy-prxq.onrender.com/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {

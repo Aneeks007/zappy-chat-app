@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./ChatPage.css";
 import ProfileDropdown from "./components/ProfileDropdown";
+import {
+  generateAESKey,
+  encryptWithAES,
+  encryptAESKeyWithRSA,
+  decryptAESKeyWithRSA,
+  decryptWithAES
+} from "./e2ee";
 
 const ChatPage = () => {
   const [showProfile, setShowProfile] = useState(false);
@@ -8,6 +15,9 @@ const ChatPage = () => {
     name: "Aneek Shah",
     avatar: "/default-avatar.png",
   });
+
+  const [messageText, setMessageText] = useState("");
+  const [messages, setMessages] = useState([]); // encrypted messages
 
   const handleProfileUpdate = (updatedUser) => {
     console.log("User updated:", updatedUser);
@@ -17,8 +27,9 @@ const ChatPage = () => {
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
-      const profileOption = Array.from(document.querySelectorAll('div[role="menuitem"]'))
-        .find((el) => el.textContent?.includes(user.name));
+      const profileOption = Array.from(
+        document.querySelectorAll('div[role="menuitem"]')
+      ).find((el) => el.textContent?.includes(user.name));
       if (profileOption) {
         profileOption.onclick = () => setShowProfile(true);
       }
@@ -28,6 +39,72 @@ const ChatPage = () => {
 
     return () => observer.disconnect();
   }, [user.name]);
+
+  const handleSendMessage = async () => {
+    const receiverUsername = "RichardRay"; // Replace with dynamic selection if needed
+
+    try {
+      const aes = await generateAESKey();
+      const { ciphertext, iv } = await encryptWithAES(aes.key, messageText);
+
+      const res = await fetch(
+        `https://zappy-prxq.onrender.com/api/auth/public-key/${receiverUsername}`
+      );
+      const { publicKey } = await res.json();
+
+      const encryptedAESKey = await encryptAESKeyWithRSA(publicKey, aes.raw);
+
+      const newEncryptedMessage = {
+        text: ciphertext,
+        custom: {
+          iv,
+          encryptedAESKey,
+          receiver: receiverUsername,
+        },
+        sender: user.username || "Aneek Shah",
+      };
+
+      // Simulate sending (replace with CometChat/StreamChat send)
+      setMessages((prev) => [...prev, newEncryptedMessage]);
+      setMessageText("");
+    } catch (err) {
+      console.error("❌ Encryption error:", err);
+      alert("Message encryption failed.");
+    }
+  };
+
+  const decryptMessage = async (msg) => {
+    try {
+      const privateKey = localStorage.getItem("zappy_private_key");
+      if (!privateKey || !msg?.custom?.encryptedAESKey) return msg.text;
+
+      const aesKey = await decryptAESKeyWithRSA(privateKey, msg.custom.encryptedAESKey);
+      const plainText = await decryptWithAES(aesKey, msg.text, msg.custom.iv);
+
+      return plainText;
+    } catch (err) {
+      console.warn("❌ Decryption failed:", err);
+      return msg.text;
+    }
+  };
+
+  const EncryptedMessageBubble = ({ msg }) => {
+    const [text, setText] = useState("Decrypting...");
+
+    useEffect(() => {
+      const decrypt = async () => {
+        const result = await decryptMessage(msg);
+        setText(result);
+      };
+      decrypt();
+    }, [msg]);
+
+    return (
+      <div className={`chat-bubble ${msg.sender === user.username ? "sent" : "received"}`}>
+        {text}
+      </div>
+    );
+  };
 
   return (
     <div className="chat-container">
@@ -50,17 +127,25 @@ const ChatPage = () => {
         </div>
 
         <div className="chat-messages">
-          <div className="chat-bubble received">Yes, it’s available.</div>
-          <div className="chat-bubble sent">Hi, is the watch still up for sale?</div>
-          <div className="chat-bubble sent">Awesome! Can I see pictures?</div>
-          <div className="chat-bubble received">Sure! Sending them now.</div>
-          <div className="chat-bubble sent">Thanks! Looks good.</div>
-          <div className="chat-bubble sent">I’ll take it. Can you ship?</div>
+          {messages.map((msg, index) => (
+            <EncryptedMessageBubble key={index} msg={msg} />
+          ))}
         </div>
 
         <div className="chat-input">
-          <input type="text" placeholder="Type a message..." />
-          <button type="button" className="send-btn">➤</button>
+          <input
+            type="text"
+            placeholder="Type a message..."
+            value={messageText}
+            onChange={(e) => setMessageText(e.target.value)}
+          />
+          <button
+            type="button"
+            className="send-btn"
+            onClick={handleSendMessage}
+          >
+            ➤
+          </button>
         </div>
       </div>
 
