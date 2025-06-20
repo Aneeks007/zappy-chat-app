@@ -6,13 +6,12 @@ import { CometChatUIKitLoginListener } from "@cometchat/chat-uikit-react";
 
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
-import CometChatApp from "./CometChat/CometChatApp";
+import CometChatApp from "./CometChat/CometChatApp"; // 🚀 Handles mobile/desktop
 
-const App = () => {
-  const navigate = useNavigate(); // ✅ Used at top level
-  const location = useLocation();
-
+function App() {
   const [loggedInUser, setLoggedInUser] = useState<CometChat.User | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     CometChat.addLoginListener(
@@ -23,7 +22,7 @@ const App = () => {
         },
         logoutSuccess: () => {
           setLoggedInUser(null);
-          navigate("/"); // ✅ Safe usage
+          navigate("/");
         },
       })
     );
@@ -33,26 +32,24 @@ const App = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      try {
-        const user = await CometChatUIKitLoginListener?.getLoggedInUser?.();
-        if (user) setLoggedInUser(user);
-      } catch (err) {
-        console.warn("❌ Error fetching user:", err);
-      }
+      const user = await CometChatUIKitLoginListener?.getLoggedInUser?.();
+      if (user) setLoggedInUser(user);
     };
     fetchUser();
   }, []);
 
   return (
     <div className="App">
-      <Routes location={location}>
+      <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/chat" element={<CometChatApp user={loggedInUser} />} />
       </Routes>
+
+      {/* ✅ Invisible padding div for safe area inset on mobile */}
       <div className="safe-area-padding" />
     </div>
   );
-};
+}
 
 export default App;

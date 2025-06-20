@@ -21,15 +21,13 @@
     "stream-chat": "^9.6.1",
     "stream-chat-react": "^13.1.0",
     "typescript": "4.9.5",
-    "web-vitals": "^2.1.4",
-    "buffer": "^6.0.3",
-    "react-app-rewired": "^2.2.1"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "preview": "npx serve -s build",
-    "test": "react-app-rewired test",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

@@ -10,21 +10,17 @@ const COMETCHAT_APP_ID = "277220fd8655d51c";
 const COMETCHAT_REGION = "IN";
 const COMETCHAT_AUTH_KEY = "4b4d37c68b34a8bb44a3738023acac08c09ab2c4";
 
-// ✅ Signup Route with publicKey support
+// ✅ Signup Route
 router.post("/signup", async (req, res) => {
-  const { name, username, password, publicKey } = req.body;
+  const { name, username, password } = req.body;
 
   try {
-    if (!name || !username || !password || !publicKey) {
-      return res.status(400).json({ error: "All fields are required" });
-    }
-
     const existingUser = await User.findOne({ username });
     if (existingUser)
       return res.status(400).json({ error: "User already exists" });
 
-    // Save user to MongoDB including publicKey
-    const newUser = new User({ name, username, password, publicKey });
+    // Save user to MongoDB
+    const newUser = new User({ name, username, password });
     await newUser.save();
 
     // Also create user in CometChat
@@ -82,19 +78,6 @@ router.get("/users", async (req, res) => {
     res.json(users);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch users" });
-  }
-});
-// ✅ Get public key of a specific user by username
-router.get("/public-key/:username", async (req, res) => {
-  const { username } = req.params;
-
-  try {
-    const user = await User.findOne({ username });
-    if (!user) return res.status(404).json({ error: "User not found" });
-
-    res.json({ publicKey: user.publicKey });
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch public key" });
   }
 });
 

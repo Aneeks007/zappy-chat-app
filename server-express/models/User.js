@@ -14,10 +14,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  publicKey: {
-    type: String,
-    required: true, // ✅ added for E2EE
-  },
 });
 
 module.exports = mongoose.model("User", UserSchema);

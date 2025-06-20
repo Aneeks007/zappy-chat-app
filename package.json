@@ -1,14 +1,5 @@
 {
   "dependencies": {
-    "@cometchat/chat-uikit-react": "^6.1.0",
-    "buffer": "^6.0.3",
-    "crypto-browserify": "^3.12.1",
-    "react": "^18.3.1",
-    "react-app-rewired": "^2.2.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.30.1"
-  },
-  "devDependencies": {
-    "@types/react-router-dom": "^5.3.3"
+    "lucide-react": "^0.516.0"
   }
 }
