@@ -8,14 +8,10 @@ import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import CometChatApp from "./CometChat/CometChatApp";
 
-function AppWrapper() {
-  const navigate = useNavigate();
+const App = () => {
+  const navigate = useNavigate(); // ✅ Must be called directly here
   const location = useLocation();
 
-  return <App navigate={navigate} location={location} />;
-}
-
-function App({ navigate, location }) {
   const [loggedInUser, setLoggedInUser] = useState<CometChat.User | null>(null);
 
   useEffect(() => {
@@ -27,7 +23,7 @@ function App({ navigate, location }) {
         },
         logoutSuccess: () => {
           setLoggedInUser(null);
-          navigate("/");
+          navigate("/"); // ✅ This is fine now
         },
       })
     );
@@ -50,10 +46,9 @@ function App({ navigate, location }) {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/chat" element={<CometChatApp user={loggedInUser} />} />
       </Routes>
-
       <div className="safe-area-padding" />
     </div>
   );
-}
+};
 
-export default AppWrapper;
+export default App;
