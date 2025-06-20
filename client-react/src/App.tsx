@@ -2,29 +2,17 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-// 👇 Comment or fix this if you’re not using UIKit
-// import { CometChatUIKitLoginListener } from "@cometchat/chat-uikit-react";
 
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
-import CometChatApp from "./CometChat/CometChatApp"; // 🚀 Handles mobile/desktop
+import CometChatApp from "./CometChat/CometChatApp";
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState<CometChat.User | null>(null);
-
-  let navigate: ReturnType<typeof useNavigate> | undefined;
-  let location: ReturnType<typeof useLocation> | undefined;
-
-  try {
-    navigate = useNavigate();
-    location = useLocation();
-  } catch (err) {
-    console.warn("⚠️ Router context not ready yet:", err);
-  }
+  const navigate = useNavigate();
+  const location = useLocation(); // 🚫 Don’t move this below any condition
 
   useEffect(() => {
-    if (!navigate) return;
-
     CometChat.addLoginListener(
       "zappy-app",
       new CometChat.LoginListener({
@@ -33,7 +21,7 @@ function App() {
         },
         logoutSuccess: () => {
           setLoggedInUser(null);
-          navigate && navigate("/");
+          navigate("/");
         },
       })
     );
@@ -47,7 +35,7 @@ function App() {
         const user = await CometChat.getLoggedinUser?.();
         if (user) setLoggedInUser(user);
       } catch (err) {
-        console.warn("❌ Failed to fetch logged-in user:", err);
+        console.warn("❌ Error fetching user:", err);
       }
     };
     fetchUser();
@@ -60,8 +48,6 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/chat" element={<CometChatApp user={loggedInUser} />} />
       </Routes>
-
-      {/* ✅ Invisible padding div for safe area inset on mobile */}
       <div className="safe-area-padding" />
     </div>
   );
