@@ -6,13 +6,17 @@ import { CometChatUIKitLoginListener } from "@cometchat/chat-uikit-react";
 
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
-import CometChatApp from "./CometChat/CometChatApp"; // 🚀 Handles mobile/desktop
+import CometChatApp from "./CometChat/CometChatApp";
 
-function App() {
-  const [loggedInUser, setLoggedInUser] = useState<CometChat.User | null>(null);
-  
-  const navigate = useNavigate(); // ✅ always call hooks at top level
+function AppWrapper() {
+  const navigate = useNavigate();
   const location = useLocation();
+
+  return <App navigate={navigate} location={location} />;
+}
+
+function App({ navigate, location }) {
+  const [loggedInUser, setLoggedInUser] = useState<CometChat.User | null>(null);
 
   useEffect(() => {
     CometChat.addLoginListener(
@@ -23,7 +27,7 @@ function App() {
         },
         logoutSuccess: () => {
           setLoggedInUser(null);
-          navigate("/"); // works now without hook violation
+          navigate("/");
         },
       })
     );
@@ -41,7 +45,7 @@ function App() {
 
   return (
     <div className="App">
-      <Routes location={location}>
+      <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/chat" element={<CometChatApp user={loggedInUser} />} />
@@ -52,4 +56,4 @@ function App() {
   );
 }
 
-export default App;
+export default AppWrapper;
