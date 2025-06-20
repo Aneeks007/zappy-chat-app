@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './SignupPage.css';
 import { useNavigate } from 'react-router-dom';
 import zappyLogo from './assets/zappy-logo.png';
-import { generateKeyPair } from './utils/e2ee'; // ✅ Import key generator
+import { generateKeyPair } from './e2ee'; // ✅ Import key generator
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
