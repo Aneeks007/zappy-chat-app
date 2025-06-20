@@ -8,9 +8,9 @@ import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import CometChatApp from "./CometChat/CometChatApp";
 
-function App() {
-  const navigate = useNavigate(); // ✅ must not be inside condition
-  const location = useLocation(); // ✅ must not be inside condition
+const App = () => {
+  const navigate = useNavigate(); // ✅ Used at top level
+  const location = useLocation();
 
   const [loggedInUser, setLoggedInUser] = useState<CometChat.User | null>(null);
 
@@ -23,7 +23,7 @@ function App() {
         },
         logoutSuccess: () => {
           setLoggedInUser(null);
-          navigate("/"); // ✅ safe usage
+          navigate("/"); // ✅ Safe usage
         },
       })
     );
@@ -33,24 +33,26 @@ function App() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await CometChatUIKitLoginListener?.getLoggedInUser?.();
-      if (user) setLoggedInUser(user);
+      try {
+        const user = await CometChatUIKitLoginListener?.getLoggedInUser?.();
+        if (user) setLoggedInUser(user);
+      } catch (err) {
+        console.warn("❌ Error fetching user:", err);
+      }
     };
     fetchUser();
   }, []);
 
   return (
     <div className="App">
-      <Routes>
+      <Routes location={location}>
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/chat" element={<CometChatApp user={loggedInUser} />} />
       </Routes>
-
-      {/* ✅ Safe area padding for mobile */}
       <div className="safe-area-padding" />
     </div>
   );
-}
+};
 
 export default App;
