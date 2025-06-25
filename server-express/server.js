@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require("./authRoutes");
+const pingRoute = require("./routes/ping"); // ✅ Add this line
 
 const app = express();
 app.use(express.json());
@@ -19,6 +20,9 @@ mongoose
 
 // Auth routes
 app.use("/auth", authRoutes);
+
+// ✅ MongoDB ping route
+app.use("/api/ping", pingRoute);
 
 // Default route
 app.get("/", (req, res) => {
